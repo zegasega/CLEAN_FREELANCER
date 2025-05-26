@@ -68,6 +68,19 @@ class ProposalService extends BaseService {
         const proposals = await this.db.Proposal.findAll({ where: { jobId } });
         return proposals;
     }
+
+    async getProposalsByFreelancer(freelancerId) {
+        freelancerId = Number(freelancerId);
+        if (isNaN(freelancerId)) throw new Error("Invalid freelancerId");
+
+        const freelancer = await this.db.User.findByPk(freelancerId);
+        if (!freelancer) throw new Error("Freelancer not found");
+
+        const proposals = await this.findAll(freelancerId);
+        return proposals;
+    }
+
+
 }
 
 module.exports = new ProposalService();

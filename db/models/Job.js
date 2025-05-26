@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Job = sequelize.define("Job", {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-    clientId: {  // İş ilanını açan client kullanıcı id'si
+    clientId: {  
       type: DataTypes.INTEGER,
       allowNull: false,
     },

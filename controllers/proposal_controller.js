@@ -70,6 +70,16 @@ class ProposalController extends BaseController{
         }
     }
 
+    async getProposalsByFreelancer(req, res) {
+        try {
+            const freelancerId = req.user.id;
+            const proposals = await this.ProposalService.getProposalsByFreelancer(freelancerId);
+            res.status(200).json(proposals);
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    }
+
 }
 
 module.exports = new ProposalController();

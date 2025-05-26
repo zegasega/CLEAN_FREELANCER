@@ -44,6 +44,26 @@ class JobController extends BaseController{
         }
     }
 
+    async getById(req, res) {
+        try {
+            const jobId = req.params.id;
+            const job = await this.JobService.getJobById(jobId);
+            res.status(200).json(job);
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    }
+
+    async getByClientId(req, res) {
+        try {
+            const clientId = req.user.id;
+            const jobs = await this.JobService.getJobsByClientId(clientId);
+            res.status(200).json(jobs);
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    }
+
 }
 
 module.exports = new JobController();
