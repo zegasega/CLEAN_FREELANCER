@@ -20,7 +20,12 @@ module.exports = (sequelize, DataTypes) => {
     status: {
       type: DataTypes.ENUM("open", "closed", "in_progress"),
       defaultValue: "open",
-    }
+    },
+    assignedFreelancerId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: null,
+    },
   }, {
     timestamps: true,
     tableName: "jobs",
@@ -28,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
 
   Job.associate = (models) => {
     Job.belongsTo(models.User, { foreignKey: "clientId", as: "client" });
+  };
+  Job.associate = (models) => {
+    Job.belongsTo(models.User, { foreignKey: "assignedFreelancerId", as: "freelancer" });
+    Job.hasMany(models.Review, { foreignKey: "jobId" });
   };
 
   return Job;
