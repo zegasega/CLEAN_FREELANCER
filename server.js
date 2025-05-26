@@ -16,7 +16,7 @@ async function startServer() {
     await db.sequelize.authenticate();
     console.log('Database connection successful');
 
-    await db.sequelize.sync({ alter: true, force: false});
+    await db.sequelize.sync({ alter: true, force: false });
     console.log('Tables synchronized');
     
     await initRedis();
