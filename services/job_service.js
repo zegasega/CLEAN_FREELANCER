@@ -42,6 +42,20 @@ class JobService extends BaseService{
         await job.destroy();
         return { message: "Job deleted successfully" };
     }
+
+    async getJobById(jobId) {
+        const job = await this.findByPk(jobId);
+        if (!job) throw new Error("Job not found");
+        return job;
+    }
+
+    async getJobsByClientId(clientId) {
+        const user = await this.db.User.findByPk(clientId);
+        if (!user) throw new Error("Client not found");
+
+        const jobs = await this.findAll({ where: { clientId } });
+        return jobs;
+    }
 }
 
 module.exports = new JobService();
