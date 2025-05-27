@@ -39,6 +39,11 @@ router.put("/jobs/:id", authMiddleware, roleMiddleware("client", "admin"), (req,
 router.delete("/jobs/:id", authMiddleware, roleMiddleware("client", "admin"), (req, res) => JobController.delete(req, res));
 router.get("/jobs", authMiddleware, (req, res) => JobController.getAll(req, res));
 
+// Assign job to freelancer
+router.post("/jobs/:jobId/assign/:freelancerId", authMiddleware, roleMiddleware("client"), (req, res) => JobController.assignJobToFreelancer(req, res));
+
+
+
 // PROPOSAL ROUTES
 router.post("/jobs/:jobId/proposals", authMiddleware, roleMiddleware("freelancer"), (req, res) => ProposalController.create(req, res));
 router.put("/proposals/:id", authMiddleware, roleMiddleware("freelancer"), (req, res) => ProposalController.update(req, res));

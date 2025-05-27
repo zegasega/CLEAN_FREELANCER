@@ -63,6 +63,16 @@ class JobController extends BaseController{
             res.status(400).json({ error: error.message });
         }
     }
+    async assignJobToFreelancer(req, res) {
+        try {
+            const jobId = req.params.id;
+            const freelancerId = req.params.freelancerId;
+            const result = await this.JobService.assignJobToFreelancer(jobId, freelancerId);
+            res.status(200).json(result);
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    }
 
 }
 

@@ -128,7 +128,7 @@ class UserService extends BaseService {
   async getAllUsers() {
     const users = await this.findAll();
     if (users.length === 0) {
-      return { message: "No users found.", data: [] };
+      return { message: "No users found."};
     }
 
     const safeUsers = users.map((user) => ({
