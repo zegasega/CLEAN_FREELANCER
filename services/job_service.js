@@ -20,6 +20,7 @@ class JobService extends BaseService{
 
         return { message: "Job created successfully", data: newJob };
     }
+
     async updateJob(jobData) {
         const { jobId, title, description, budget } = jobData;
 
@@ -48,11 +49,13 @@ class JobService extends BaseService{
         if (!job) throw new Error("Job not found");
 
         const freelancer = await this.db.User.findByPk(freelancerId);
-        if(freelancer.role !== "freelancer") {
+        if (!freelancer) throw new Error("Freelancer not found");
+
+        if (freelancer.role !== "freelancer") {
             throw new Error("User is not a freelancer");
         }
-        if (!freelancer) throw new Error("Freelancer not found");
-        if (job.assignedFreelancerId === freelancerId) {
+
+        if (job.assignedFreelancerId == freelancerId) {
             throw new Error("Job is already assigned to this freelancer");
         }
 
@@ -60,7 +63,10 @@ class JobService extends BaseService{
         job.status = "in_progress";
         await job.save();
 
-        return { message: "Job assigned to freelancer successfully", data: job };
+        return {
+            message: "Job assigned to freelancer successfully",
+            data: job
+        };
     }
 
     async getJobById(jobId) {
@@ -75,6 +81,20 @@ class JobService extends BaseService{
 
         const jobs = await this.findAll({ where: { clientId } });
         return jobs;
+    }
+
+    async closeJob(jobId) {
+        const job = await this.findByPk(jobId);
+        if (!job) throw new Error("Job not found");
+
+        if (job.status === "closed") {
+            throw new Error("Job is already closed");
+        }
+
+        job.status = "closed";
+        await job.save();
+
+        return { message: "Job closed successfully", data: job };
     }
 }
 
