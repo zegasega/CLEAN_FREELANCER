@@ -44,7 +44,7 @@ class JobService extends BaseService{
         return { message: "Job deleted successfully" };
     }
 
-    async assignJobToFreelancer(jobId, freelancerId) {
+   async assignJobToFreelancer(jobId, freelancerId) {
         const job = await this.db.Job.findOne(jobId);
         if (!job) throw new Error("Job not found");
 
@@ -55,8 +55,19 @@ class JobService extends BaseService{
             throw new Error("User is not a freelancer");
         }
 
-        if (job.assignedFreelancerId == freelancerId) {
+        if (job.assignedFreelancerId === freelancerId) {
             throw new Error("Job is already assigned to this freelancer");
+        }
+
+        const existingJob = await this.db.Job.findOne({
+            where: {
+                assignedFreelancerId: freelancerId,
+                status: "in_progress"
+            }
+        });
+
+        if (existingJob) {
+            throw new Error("Freelancer already has an active job");
         }
 
         job.assignedFreelancerId = freelancerId;
@@ -68,6 +79,7 @@ class JobService extends BaseService{
             data: job
         };
     }
+
 
     async getJobById(jobId) {
         const job = await this.findByPk(jobId);
