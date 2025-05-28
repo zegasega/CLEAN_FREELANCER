@@ -80,6 +80,7 @@ class ProposalService extends BaseService {
         return proposals;
     }
 
+    async
 
 }
 

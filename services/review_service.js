@@ -56,7 +56,7 @@ class ReviewService extends BaseService {
         const job = await this.db.Job.findByPk(jobId);
         if (!job) throw new Error("Job not found");
 
-        const reviews = await this.findAll({ where: { jobId } });
+        const reviews = await this.findAll(jobId);
         return { message: "Reviews retrieved successfully", data: reviews };
     }
 
@@ -64,7 +64,17 @@ class ReviewService extends BaseService {
         const reviewer = await this.db.User.findByPk(reviewerId);
         if (!reviewer) throw new Error("Reviewer not found");
 
-        const reviews = await this.findAll({ where: { reviewerId } });
+        const reviews = await this.findAll(reviewerId);
+        return { message: "Reviews retrieved successfully", data: reviews };
+    }
+
+    async getAllReviews(query) {
+        const reviews = await this.db.Review.findAll({ where: query });
+
+        if (reviews.length === 0) {
+        return { message: "Reviews not found", data: [] };
+    }
+
         return { message: "Reviews retrieved successfully", data: reviews };
     }
 }
