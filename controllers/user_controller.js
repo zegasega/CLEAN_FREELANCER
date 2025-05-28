@@ -7,7 +7,11 @@ class UserController extends BaseController {
 
   async Register(req, res) {  
     try {
-      const result = await this.UserService.createUser(req.body);
+      const result = await this.service.userService.createUser(req.body);
+
+      await this.service.emailService.sendMessage("zegasega11@gmail.com", "Welcome", "Welcome to home");
+      
+      
       return res.status(201).json(result); 
 
     } catch (error) {
